@@ -87,6 +87,8 @@
             this.cbStudent.TabIndex = 4;
             this.cbStudent.Text = "Student";
             this.cbStudent.UseVisualStyleBackColor = true;
+            this.cbStudent.CheckedChanged += new System.EventHandler(this.cbStudent_CheckedChanged);
+            this.cbStudent.CheckStateChanged += new System.EventHandler(this.CbStudent_CheckStateChanged);
             // 
             // lbDataCredit
             // 

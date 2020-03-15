@@ -47,7 +47,7 @@ namespace Proiect_PAW_StroescuM
                 command.Parameters.AddWithValue("sumaAprobata", tb_sumaCeruta.Text);
                 command.Parameters.AddWithValue("perioadaCredit", clbPerioadaDeCreditare.CheckedItems[0].ToString());
                 String perioadaDeGratiere;
-                if (isStudent) perioadaDeGratiere = clbPerioadaDeGratiere.CheckedItems[0].ToString();
+                if (isStudent && cbStudent.Checked == true) perioadaDeGratiere = clbPerioadaDeGratiere.CheckedItems[0].ToString();
                 else perioadaDeGratiere = "0";
                 CreditStudiu creditNou = new CreditStudiu(DateTime.Now, int.Parse(tb_sumaCeruta.Text),
                     int.Parse(clbPerioadaDeCreditare.CheckedItems[0].ToString()),
@@ -64,7 +64,6 @@ namespace Proiect_PAW_StroescuM
                     }
                     else
                     {
-                        clbPerioadaDeGratiere.Enabled = false;
                         command.Parameters.AddWithValue("dobanda", "12");
                         command.Parameters.AddWithValue("totalDePlata", (creditNou).CalculeazaCredit().ToString());
                         command.Parameters.AddWithValue("dataCredit", DateTime.Now.ToShortDateString());
@@ -127,6 +126,18 @@ namespace Proiect_PAW_StroescuM
                 test.Text = "Hallo";
                 this.Controls.Add(test);
             }
+        }
+
+        private void CbStudent_CheckStateChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbStudent_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbStudent.Checked == false)
+                clbPerioadaDeGratiere.Enabled = false;
+            else clbPerioadaDeGratiere.Enabled = true;
         }
     }
 }
