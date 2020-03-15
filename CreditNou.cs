@@ -64,6 +64,7 @@ namespace Proiect_PAW_StroescuM
                     }
                     else
                     {
+                        clbPerioadaDeGratiere.Enabled = false;
                         command.Parameters.AddWithValue("dobanda", "12");
                         command.Parameters.AddWithValue("totalDePlata", (creditNou).CalculeazaCredit().ToString());
                         command.Parameters.AddWithValue("dataCredit", DateTime.Now.ToShortDateString());
