@@ -69,6 +69,7 @@ namespace Proiect_PAW_StroescuM
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                //
             }
         }
 
