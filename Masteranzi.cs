@@ -10,7 +10,6 @@ namespace Proiect_PAW_StroescuM
     {
         private string numarMatricol;
         private string numeInstitutie;
-        //private CreditStudiu credit;
 
         public Masteranzi(string numeClient,
             DateTime dataNasterii,

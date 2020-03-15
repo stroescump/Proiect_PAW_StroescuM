@@ -142,8 +142,6 @@ namespace Proiect_PAW_StroescuM
         {
             if (!cbStudent.Checked)
             {
-                //Console.WriteLine(this.Size);
-                //this.Size = new Size(481, 500);
                 this.Size = new Size(this.Size.Width, this.Size.Height - lbNumeInstitutie.Size.Height -
                     lbNrMatricol.Size.Height - nrMatricol.Size.Height - numeInstitutie.Size.Height);
                 btnInregistrare.Location = pozitieDeStart;
