@@ -25,6 +25,7 @@ namespace Proiect_PAW_StroescuM
             if (isStudent)
             {
                 cbStudent.Enabled = true;
+                cbStudent.Checked = true;
                 clbPerioadaDeGratiere.Enabled = true;
             }
             else
@@ -136,7 +137,13 @@ namespace Proiect_PAW_StroescuM
         private void cbStudent_CheckedChanged(object sender, EventArgs e)
         {
             if (cbStudent.Checked == false)
+            {
                 clbPerioadaDeGratiere.Enabled = false;
+                for (int i = 0; i < clbPerioadaDeGratiere.Items.Count; i++)
+                {
+                    clbPerioadaDeGratiere.SetItemChecked(i, false);
+                }
+            }
             else clbPerioadaDeGratiere.Enabled = true;
         }
     }
