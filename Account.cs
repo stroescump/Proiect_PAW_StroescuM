@@ -22,6 +22,7 @@ namespace Proiect_PAW_StroescuM
         private Credite credit;
         private bool isStudent = false;
         private List<Credite> listaCredite = new List<Credite>();
+        private double cuantumTotalCredite;
 
         public Account(String s, String CNP)
         {
@@ -52,6 +53,7 @@ namespace Proiect_PAW_StroescuM
                         item.SubItems.Add(CreditStudiu.DOBANDA.ToString() + "%");
                         item.SubItems.Add(c.PerioadaDeGratie.ToString() + " ani");
                         listaCredite.Add(c);
+                        cuantumTotalCredite += c.CalculeazaCredit();
                     }
                     else
                     {
@@ -66,6 +68,7 @@ namespace Proiect_PAW_StroescuM
                         item.SubItems.Add(c.CalculeazaCredit().ToString());
                         item.SubItems.Add(Credite.DOBANDA.ToString() + "%");
                         listaCredite.Add(c);
+                        cuantumTotalCredite += c.CalculeazaCredit();
                     }
                 }
                 reader.Close();
@@ -130,54 +133,70 @@ namespace Proiect_PAW_StroescuM
 
         }
 
+        private void displayCreditFromTxtFile(Object path)
+        {
+            StreamReader reader = null;
+            if (path is OpenFileDialog)
+            {
+                reader = new StreamReader(((OpenFileDialog)path).FileName);
+
+            }
+            else if (path is string)
+            {
+                reader = new StreamReader((string)path);
+            }
+
+            string gdpr = reader.ReadLine(); // Antentul fisierului cu detalii despre persoana
+            if (CNP.Equals(gdpr))
+            {
+                string[] creditParsed = new string[9];
+                string creditTxt;
+                while ((creditTxt = reader.ReadLine()) != null)
+                {
+
+                    if (creditTxt != null)
+                    {
+                        creditParsed = creditTxt.Split(',');
+                    }
+
+                    try
+                    {
+                        if (creditParsed.Length > 8)
+                        {
+                            if (creditParsed[8].Equals("perioadaDeGratie"))
+                            {
+                                CreditStudiu nouCredit = new CreditStudiu(DateTime.Parse(creditParsed[1]), double.Parse(creditParsed[3]),
+                                    int.Parse(creditParsed[5]), int.Parse(creditParsed[9]));
+                                MessageBox.Show(nouCredit.ToString());
+                            }
+                        }
+                        else
+                        {
+                            Credite nouCredit = new Credite(DateTime.Parse(creditParsed[1]), double.Parse(creditParsed[3]), int.Parse(creditParsed[5]));
+                            MessageBox.Show(nouCredit.ToString());
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Integritatea datelor a fost compromisa, nu se pot prelucra!" + Environment.NewLine + ex.StackTrace);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Aceste date nu va apartin! Va rugam sa utilizati doar date asociate contului dvs.!");
+            }
+            reader.Close();
+        }
+
         private void restaurareToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "(*.txt)|*.txt";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                StreamReader reader = new StreamReader(openFileDialog1.FileName);
-                string gdpr = reader.ReadLine(); // Antentul fisierului cu detalii despre persoana
-                if (CNP.Equals(gdpr))
-                {
-                    string[] creditParsed = new string[9];
-                    string creditTxt;
-                    while ((creditTxt = reader.ReadLine()) != null)
-                    {
-
-                        if (creditTxt != null)
-                        {
-                            creditParsed = creditTxt.Split(',');
-                        }
-
-                        try
-                        {
-                            if (creditParsed.Length > 8)
-                            {
-                                if (creditParsed[8].Equals("perioadaDeGratie"))
-                                {
-                                    CreditStudiu nouCredit = new CreditStudiu(DateTime.Parse(creditParsed[1]), double.Parse(creditParsed[3]),
-                                        int.Parse(creditParsed[5]), int.Parse(creditParsed[9]));
-                                    MessageBox.Show(nouCredit.ToString());
-                                }
-                            }
-                            else
-                            {
-                                Credite nouCredit = new Credite(DateTime.Parse(creditParsed[1]), double.Parse(creditParsed[3]), int.Parse(creditParsed[5]));
-                                MessageBox.Show(nouCredit.ToString());
-                            }
-
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Integritatea datelor a fost compromisa, nu se pot prelucra!" + Environment.NewLine + ex.Message);
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Aceste date nu va apartin! Va rugam sa utilizati doar date asociate contului dvs.!");
-                }
-                reader.Close();
+                displayCreditFromTxtFile(openFileDialog1.FileName);
             }
         }
 
@@ -196,8 +215,16 @@ namespace Proiect_PAW_StroescuM
 
             for (int i = 0; i < listaCredite.Count; i++)
             {
-                args.Graphics.DrawString(listaCredite[i].ToString(), font, brush, x, y);
-                y += 100;
+                if (listaCredite[i] is CreditStudiu)
+                {
+                    args.Graphics.DrawString(((CreditStudiu)listaCredite[i]).PrepareForPrint(), font, brush, x, y);
+                    y += 100;
+                }
+                else
+                {
+                    args.Graphics.DrawString(listaCredite[i].PrepareForPrint(), font, brush, x, y);
+                    y += 100;
+                }
             }
         }
 
@@ -209,6 +236,30 @@ namespace Proiect_PAW_StroescuM
             printPreviewDialog1.Document = pd;
             printPreviewDialog1.ShowDialog();
 
+        }
+
+        private void pieChartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PieChart frmPieChart = new PieChart(listaCredite, cuantumTotalCredite);
+            frmPieChart.ShowDialog();
+        }
+
+        private void Account_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] data = (string[])e.Data.GetData(DataFormats.FileDrop);
+            displayCreditFromTxtFile(data[0]);
+        }
+
+        private void Account_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
         }
     }
 }

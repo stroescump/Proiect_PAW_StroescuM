@@ -37,6 +37,8 @@
             this.restaurareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.raportareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pieChartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbCreditePeRol = new System.Windows.Forms.Label();
             this.lvCredite = new System.Windows.Forms.ListView();
             this.colrNrCrt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -73,7 +75,8 @@
             this.salvareToolStripMenuItem,
             this.restaurareToolStripMenuItem,
             this.logoutToolStripMenuItem,
-            this.printToolStripMenuItem});
+            this.printToolStripMenuItem,
+            this.raportareToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1200, 33);
@@ -122,6 +125,21 @@
             this.printToolStripMenuItem.Size = new System.Drawing.Size(64, 29);
             this.printToolStripMenuItem.Text = "Print";
             this.printToolStripMenuItem.Click += new System.EventHandler(this.printToolStripMenuItem_Click);
+            // 
+            // raportareToolStripMenuItem
+            // 
+            this.raportareToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pieChartToolStripMenuItem});
+            this.raportareToolStripMenuItem.Name = "raportareToolStripMenuItem";
+            this.raportareToolStripMenuItem.Size = new System.Drawing.Size(106, 29);
+            this.raportareToolStripMenuItem.Text = "Raportare";
+            // 
+            // pieChartToolStripMenuItem
+            // 
+            this.pieChartToolStripMenuItem.Name = "pieChartToolStripMenuItem";
+            this.pieChartToolStripMenuItem.Size = new System.Drawing.Size(184, 34);
+            this.pieChartToolStripMenuItem.Text = "Pie Chart";
+            this.pieChartToolStripMenuItem.Click += new System.EventHandler(this.pieChartToolStripMenuItem_Click);
             // 
             // lbCreditePeRol
             // 
@@ -211,6 +229,7 @@
             // 
             // Account
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
@@ -224,6 +243,8 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Account";
             this.Text = "Account";
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Account_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Account_DragEnter);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -254,5 +275,7 @@
         private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
+        private System.Windows.Forms.ToolStripMenuItem raportareToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pieChartToolStripMenuItem;
     }
 }
