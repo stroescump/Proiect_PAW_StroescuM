@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Account));
             this.lbUser_Logged = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.CrediteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contractareCreditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.salvareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restaurareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbCreditePeRol = new System.Windows.Forms.Label();
             this.lvCredite = new System.Windows.Forms.ListView();
             this.colrNrCrt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -46,7 +49,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,7 +63,6 @@
             this.lbUser_Logged.Size = new System.Drawing.Size(198, 37);
             this.lbUser_Logged.TabIndex = 0;
             this.lbUser_Logged.Text = "Bine ai venit,";
-            this.lbUser_Logged.Click += new System.EventHandler(this.lbUser_Logged_Click);
             // 
             // menuStrip1
             // 
@@ -70,7 +72,8 @@
             this.CrediteToolStripMenuItem,
             this.salvareToolStripMenuItem,
             this.restaurareToolStripMenuItem,
-            this.logoutToolStripMenuItem});
+            this.logoutToolStripMenuItem,
+            this.printToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1200, 33);
@@ -84,7 +87,6 @@
             this.CrediteToolStripMenuItem.Name = "CrediteToolStripMenuItem";
             this.CrediteToolStripMenuItem.Size = new System.Drawing.Size(84, 29);
             this.CrediteToolStripMenuItem.Text = "&Credite";
-            this.CrediteToolStripMenuItem.Click += new System.EventHandler(this.CrediteToolStripMenuItem_Click);
             // 
             // contractareCreditToolStripMenuItem
             // 
@@ -106,6 +108,20 @@
             this.restaurareToolStripMenuItem.Size = new System.Drawing.Size(110, 29);
             this.restaurareToolStripMenuItem.Text = "&Restaurare";
             this.restaurareToolStripMenuItem.Click += new System.EventHandler(this.restaurareToolStripMenuItem_Click);
+            // 
+            // logoutToolStripMenuItem
+            // 
+            this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(85, 29);
+            this.logoutToolStripMenuItem.Text = "Logout";
+            this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click);
+            // 
+            // printToolStripMenuItem
+            // 
+            this.printToolStripMenuItem.Name = "printToolStripMenuItem";
+            this.printToolStripMenuItem.Size = new System.Drawing.Size(64, 29);
+            this.printToolStripMenuItem.Text = "Print";
+            this.printToolStripMenuItem.Click += new System.EventHandler(this.printToolStripMenuItem_Click);
             // 
             // lbCreditePeRol
             // 
@@ -183,12 +199,15 @@
             this.progressBar.TabIndex = 16;
             this.progressBar.Visible = false;
             // 
-            // logoutToolStripMenuItem
+            // printPreviewDialog1
             // 
-            this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(85, 29);
-            this.logoutToolStripMenuItem.Text = "Logout";
-            this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click);
+            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog1.Enabled = true;
+            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
+            this.printPreviewDialog1.Name = "printPreviewDialog1";
+            this.printPreviewDialog1.Visible = false;
             // 
             // Account
             // 
@@ -205,7 +224,6 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Account";
             this.Text = "Account";
-            this.Load += new System.EventHandler(this.Account_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -234,5 +252,7 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
+        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
     }
 }

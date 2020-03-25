@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
 using System.IO;
+using System.Drawing.Printing;
 
 namespace Proiect_PAW_StroescuM
 {
@@ -21,7 +22,6 @@ namespace Proiect_PAW_StroescuM
         private Credite credit;
         private bool isStudent = false;
         private List<Credite> listaCredite = new List<Credite>();
-        private List<CreditStudiu> listaCrediteStudiu = new List<CreditStudiu>();
 
         public Account(String s, String CNP)
         {
@@ -51,7 +51,7 @@ namespace Proiect_PAW_StroescuM
                         item.SubItems.Add(c.CalculeazaCredit().ToString());
                         item.SubItems.Add(CreditStudiu.DOBANDA.ToString() + "%");
                         item.SubItems.Add(c.PerioadaDeGratie.ToString() + " ani");
-                        listaCrediteStudiu.Add(c);
+                        listaCredite.Add(c);
                     }
                     else
                     {
@@ -77,31 +77,16 @@ namespace Proiect_PAW_StroescuM
             }
         }
 
-        private void Account_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void contractareCreditToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.CNP != null)
             {
                 MessageBox.Show(this.CNP);
-                new CreditNou(this.CNP, isStudent, listaCredite, listaCrediteStudiu).ShowDialog();
+                new CreditNou(this.CNP, isStudent).ShowDialog();
 
 
             }
             else MessageBox.Show("Eroare la contractare credite! Va rugam reincercati!");
-
-        }
-
-        private void CrediteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lbUser_Logged_Click(object sender, EventArgs e)
-        {
 
         }
 
@@ -122,14 +107,15 @@ namespace Proiect_PAW_StroescuM
                     for (int i = 0; i < listaCredite.Count; i++)
                     {
                         progressBar.Value += 20;
-                        writer.WriteLine(listaCredite[i].TransformCreditToCsv());
+                        if (listaCredite[i] is CreditStudiu)
+
+                            writer.WriteLine(((CreditStudiu)listaCredite[i]).TransformCreditToCsv());
+                        else
+                        {
+                            writer.WriteLine(listaCredite[i].TransformCreditToCsv());
+                        }
                     }
 
-                    for (int i = 0; i < listaCrediteStudiu.Count; i++)
-                    {
-
-                        writer.WriteLine(listaCrediteStudiu[i].TransformCreditToCsv());
-                    }
                     writer.Close();
                     progressBar.Value += 100 - progressBar.Value;
                     MessageBox.Show("Salvarea s-a efectuat cu succes!");
@@ -199,6 +185,30 @@ namespace Proiect_PAW_StroescuM
         {
             this.Hide();
             new Login().ShowDialog();
+        }
+
+        public void printDataListView(object sender, PrintPageEventArgs args)
+        {
+            float x = 50;
+            float y = 100;
+            Font font = new Font(FontFamily.GenericSansSerif, 10);
+            Brush brush = Brushes.Black;
+
+            for (int i = 0; i < listaCredite.Count; i++)
+            {
+                args.Graphics.DrawString(listaCredite[i].ToString(), font, brush, x, y);
+                y += 100;
+            }
+        }
+
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            PrintDocument pd = new PrintDocument();
+            pd.PrintPage += new PrintPageEventHandler(this.printDataListView);
+            printPreviewDialog1.Document = pd;
+            printPreviewDialog1.ShowDialog();
+
         }
     }
 }

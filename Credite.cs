@@ -66,7 +66,7 @@ namespace Proiect_PAW_StroescuM
         public override string ToString()
         {
             return "Creditul a fost accesat la " + dataCredit.ToShortDateString() + " cu o suma aprobata de " + sumaAprobata + " RON" +
-                " pe o perioada de " + perioadaCredit + " luni" + " cu o dobanda de " + DOBANDA + "% " +
+                " pe o perioada de " + perioadaCredit + " luni" + "\n cu o dobanda de " + DOBANDA + "% " +
                 " iar suma totala de rambursat este " + CalculeazaCredit() + " RON";
         }
 
