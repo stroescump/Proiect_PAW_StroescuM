@@ -131,7 +131,7 @@
             this.btn_aplicaCredit.Name = "btn_aplicaCredit";
             this.btn_aplicaCredit.Size = new System.Drawing.Size(210, 34);
             this.btn_aplicaCredit.TabIndex = 8;
-            this.btn_aplicaCredit.Text = "Aplica pentru credit";
+            this.btn_aplicaCredit.Text = "&Aplica pentru credit";
             this.btn_aplicaCredit.UseVisualStyleBackColor = true;
             this.btn_aplicaCredit.Click += new System.EventHandler(this.btn_aplicaCredit_Click);
             // 

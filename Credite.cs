@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proiect_PAW_StroescuM
 {
-    class Credite : IComparable, ICredit
+    public class Credite : IComparable, ICredit
     {
         private DateTime dataCredit;
         private double sumaAprobata;
@@ -61,6 +61,19 @@ namespace Proiect_PAW_StroescuM
             if (this.sumaAprobata > c.sumaAprobata) return 1;
             else if (this.sumaAprobata < c.sumaAprobata) return -1;
             else return DateTime.Compare(this.dataCredit, c.dataCredit);
+        }
+
+        public override string ToString()
+        {
+            return "Creditul a fost accesat la " + dataCredit.ToShortDateString() + " cu o suma aprobata de " + sumaAprobata + " RON" +
+                " pe o perioada de " + perioadaCredit + " luni" + " cu o dobanda de " + DOBANDA + "% " +
+                " iar suma totala de rambursat este " + CalculeazaCredit() + " RON";
+        }
+
+        public string TransformCreditToCsv()
+        {
+            return "dataCredit," + dataCredit.ToShortDateString() + ",sumaAprobata," + sumaAprobata + ",perioadaCredit," +
+                perioadaCredit + ",DOBANDA," + DOBANDA;
         }
     }
 }

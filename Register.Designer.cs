@@ -128,7 +128,7 @@
             this.btnInregistrare.Name = "btnInregistrare";
             this.btnInregistrare.Size = new System.Drawing.Size(298, 45);
             this.btnInregistrare.TabIndex = 9;
-            this.btnInregistrare.Text = "Inregistrare";
+            this.btnInregistrare.Text = "&Inregistrare";
             this.btnInregistrare.UseVisualStyleBackColor = true;
             this.btnInregistrare.Click += new System.EventHandler(this.button1_Click);
             // 

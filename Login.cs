@@ -13,6 +13,7 @@ namespace Proiect_PAW_StroescuM
 {
     public partial class Login : Form
     {
+        private bool nightMode = false;
         string provider = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = banking.accdb";
         public Login()
         {
@@ -72,9 +73,44 @@ namespace Proiect_PAW_StroescuM
             form.ShowDialog();
         }
 
-        private void Login_Load(object sender, EventArgs e)
+        private void modDeNoapteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!nightMode)
+            {
+                nightMode = true;
+                this.BackColor = Color.Black;
+                lbPass.ForeColor = Color.WhiteSmoke;
+                lbUser.ForeColor = Color.WhiteSmoke;
 
+                btnLogin.BackColor = Color.Black;
+                btnRegister.BackColor = Color.Black;
+
+                btnLogin.ForeColor = Color.WhiteSmoke;
+                btnRegister.ForeColor = Color.WhiteSmoke;
+
+                label1.ForeColor = Color.WhiteSmoke;
+                label1.Text = "**Pentru a reveni la modul de zi, apasa click dreapta pe formular";
+
+                contextMenuStrip1.Items[0].Text = "Mod de zi";
+            }
+            else
+            {
+                nightMode = false;
+                this.BackColor = Color.WhiteSmoke;
+                lbPass.ForeColor = Color.Black;
+                lbUser.ForeColor = Color.Black;
+
+                btnLogin.BackColor = Color.WhiteSmoke;
+                btnRegister.BackColor = Color.WhiteSmoke;
+
+                btnLogin.ForeColor = Color.Black;
+                btnRegister.ForeColor = Color.Black;
+
+                label1.ForeColor = Color.Black;
+                label1.Text = "**Pentru a activa modul de noapte, apasa click dreapta pe formular";
+
+                contextMenuStrip1.Items[0].Text = "Mod de noapte";
+            }
         }
     }
 }

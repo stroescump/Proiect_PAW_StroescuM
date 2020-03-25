@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proiect_PAW_StroescuM
 {
-    class CreditStudiu : Credite, ICredit
+    public class CreditStudiu : Credite, ICredit
     {
         private int perioadaDeGratie;
         new public const double DOBANDA = 3;
@@ -30,5 +30,19 @@ namespace Proiect_PAW_StroescuM
         {
             return this.CuantumCredit * (DOBANDA / 100) + this.CuantumCredit;
         }
+
+        public string TransformCreditToCsv()
+        {
+            return "dataCredit," + this.GetDateTime.ToShortDateString() + ",sumaAprobata," + this.CuantumCredit + ",perioadaCredit," +
+                this.PerioadaCredit + ",DOBANDA," + DOBANDA + ",perioadaDeGratie," + perioadaDeGratie;
+        }
+
+        public override string ToString()
+        {
+            return "Creditul a fost accesat la " + this.GetDateTime.ToShortDateString() + " cu o suma aprobata de " + this.CuantumCredit + " RON" +
+                " pe o perioada de " + this.PerioadaCredit + " luni" + " cu o dobanda de " + DOBANDA + "% " +
+                " iar suma totala de rambursat este " + CalculeazaCredit() + " RON" + Environment.NewLine + "Perioada de gratie: " + perioadaDeGratie;
+        }
+
     }
 }

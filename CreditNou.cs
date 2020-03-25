@@ -17,7 +17,9 @@ namespace Proiect_PAW_StroescuM
         private static String provider = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source=banking.accdb";
         private OleDbConnection connection = new OleDbConnection(provider);
         private bool isStudent = false;
-        public CreditNou(String CNP, bool isStudent)
+        private List<Credite> listaCredite = new List<Credite>();
+        private List<CreditStudiu> listaCrediteStudiu = new List<CreditStudiu>();
+        public CreditNou(String CNP, bool isStudent, List<Credite> listaCredite, List<CreditStudiu> listaCrediteStudiu)
         {
             InitializeComponent();
             this.CNP = CNP;
@@ -27,12 +29,14 @@ namespace Proiect_PAW_StroescuM
                 cbStudent.Enabled = true;
                 cbStudent.Checked = true;
                 clbPerioadaDeGratiere.Enabled = true;
+                this.listaCrediteStudiu = listaCrediteStudiu;
+                this.listaCredite = listaCredite;
             }
             else
             {
-
                 cbStudent.Enabled = false;
                 clbPerioadaDeGratiere.Enabled = false;
+                this.listaCredite = listaCredite;
             }
 
         }
