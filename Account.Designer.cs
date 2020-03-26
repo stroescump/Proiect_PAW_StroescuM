@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Account));
             this.lbUser_Logged = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -52,7 +53,9 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.creditStudiuBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.creditStudiuBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // lbUser_Logged
@@ -227,6 +230,10 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
+            // creditStudiuBindingSource
+            // 
+            this.creditStudiuBindingSource.DataSource = typeof(Proiect_PAW_StroescuM.CreditStudiu);
+            // 
             // Account
             // 
             this.AllowDrop = true;
@@ -243,10 +250,12 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Account";
             this.Text = "Account";
+            this.Activated += new System.EventHandler(this.Account_Activated);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Account_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Account_DragEnter);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.creditStudiuBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -277,5 +286,6 @@
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
         private System.Windows.Forms.ToolStripMenuItem raportareToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pieChartToolStripMenuItem;
+        private System.Windows.Forms.BindingSource creditStudiuBindingSource;
     }
 }

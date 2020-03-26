@@ -19,10 +19,10 @@ namespace Proiect_PAW_StroescuM
         static String provider = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = banking.accdb";
         private String CNP = null;
         private OleDbConnection connection = new OleDbConnection(provider);
-        private Credite credit;
         private bool isStudent = false;
         private List<Credite> listaCredite = new List<Credite>();
         private double cuantumTotalCredite;
+        private int counterForListaCredite;
 
         public Account(String s, String CNP)
         {
@@ -72,6 +72,8 @@ namespace Proiect_PAW_StroescuM
                     }
                 }
                 reader.Close();
+                counterForListaCredite = listaCredite.Count;
+                Console.WriteLine("Counter initial: " + counterForListaCredite);
             }
             catch (Exception ex)
             {
@@ -84,10 +86,7 @@ namespace Proiect_PAW_StroescuM
         {
             if (this.CNP != null)
             {
-                MessageBox.Show(this.CNP);
-                new CreditNou(this.CNP, isStudent).ShowDialog();
-
-
+                new CreditNou(this.CNP, isStudent, (Account)this).ShowDialog();
             }
             else MessageBox.Show("Eroare la contractare credite! Va rugam reincercati!");
 
@@ -109,7 +108,10 @@ namespace Proiect_PAW_StroescuM
                     writer.WriteLine(CNP);
                     for (int i = 0; i < listaCredite.Count; i++)
                     {
-                        progressBar.Value += 20;
+                        if (progressBar.Value < 100)
+                        {
+                            progressBar.Value += listaCredite.Count / 100;
+                        }
                         if (listaCredite[i] is CreditStudiu)
 
                             writer.WriteLine(((CreditStudiu)listaCredite[i]).TransformCreditToCsv());
@@ -209,7 +211,7 @@ namespace Proiect_PAW_StroescuM
         public void printDataListView(object sender, PrintPageEventArgs args)
         {
             float x = 50;
-            float y = 100;
+            float y = 30;
             Font font = new Font(FontFamily.GenericSansSerif, 10);
             Brush brush = Brushes.Black;
 
@@ -259,6 +261,64 @@ namespace Proiect_PAW_StroescuM
             else
             {
                 e.Effect = DragDropEffects.None;
+            }
+        }
+
+        public int GetCounterForListaCrediteForUpdateListView
+        {
+            get { return counterForListaCredite; }
+            set
+            {
+                if (value > 0)
+                {
+                    counterForListaCredite = value;
+                }
+            }
+        }
+
+        public List<Credite> GetListaCredite
+        {
+            get { return listaCredite; }
+        }
+
+        private void Account_Activated(object sender, EventArgs e)
+        {
+            Console.WriteLine("Counter final: " + counterForListaCredite);
+            if (counterForListaCredite != listaCredite.Count)
+            {
+                counterForListaCredite++;
+                Console.WriteLine("Called");
+
+                lvCredite.Items.Clear();
+                for (int i = 0; i < listaCredite.Count; i++)
+                {
+                    lvCredite.Items.Add((i + 1).ToString());
+                    for (int j = i; j < (lvCredite.Items).Count; j++)
+                    {
+                        if (listaCredite[i] is CreditStudiu)
+                        {
+                            (lvCredite.Items[j]).SubItems.Add((((CreditStudiu)listaCredite[i]).GetDateTime.ToShortDateString()));
+                            (lvCredite.Items[j]).SubItems.Add((((CreditStudiu)listaCredite[i]).CuantumCredit.ToString()));
+                            (lvCredite.Items[j]).SubItems.Add((((CreditStudiu)listaCredite[i]).PerioadaCredit.ToString()));
+                            (lvCredite.Items[j]).SubItems.Add((((CreditStudiu)listaCredite[i]).CalculeazaDobanda().ToString()));
+                            (lvCredite.Items[j]).SubItems.Add((((CreditStudiu)listaCredite[i]).CalculeazaCredit().ToString()));
+                            (lvCredite.Items[j]).SubItems.Add((CreditStudiu.DOBANDA.ToString() + "%"));
+                            (lvCredite.Items[j]).SubItems.Add(((CreditStudiu)listaCredite[i]).PerioadaDeGratie.ToString() + " ani");
+                            cuantumTotalCredite += ((CreditStudiu)listaCredite[i]).CalculeazaCredit();
+                        }
+                        else
+                        {
+                            (lvCredite.Items[j]).SubItems.Add((listaCredite[i].GetDateTime.ToShortDateString()));
+                            (lvCredite.Items[j]).SubItems.Add((listaCredite[i].CuantumCredit.ToString()));
+                            (lvCredite.Items[j]).SubItems.Add((listaCredite[i].PerioadaCredit.ToString()));
+                            (lvCredite.Items[j]).SubItems.Add((listaCredite[i].CalculeazaDobanda().ToString()));
+                            (lvCredite.Items[j]).SubItems.Add((listaCredite[i].CalculeazaCredit().ToString()));
+                            (lvCredite.Items[j]).SubItems.Add((Credite.DOBANDA.ToString() + "%"));
+                            cuantumTotalCredite += listaCredite[i].CalculeazaCredit();
+                        }
+
+                    }
+                }
             }
         }
     }

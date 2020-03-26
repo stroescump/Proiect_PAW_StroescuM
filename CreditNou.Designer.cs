@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tb_sumaCeruta = new System.Windows.Forms.TextBox();
             this.lbSumaAprobata = new System.Windows.Forms.Label();
             this.clbPerioadaDeCreditare = new System.Windows.Forms.CheckedListBox();
@@ -37,6 +38,8 @@
             this.lbPerioadaDeGratiere = new System.Windows.Forms.Label();
             this.btn_aplicaCredit = new System.Windows.Forms.Button();
             this.lb_perioadaCredit = new System.Windows.Forms.Label();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // tb_sumaCeruta
@@ -46,6 +49,7 @@
             this.tb_sumaCeruta.Name = "tb_sumaCeruta";
             this.tb_sumaCeruta.Size = new System.Drawing.Size(210, 26);
             this.tb_sumaCeruta.TabIndex = 0;
+            this.tb_sumaCeruta.TextChanged += new System.EventHandler(this.tb_sumaCeruta_TextChanged);
             // 
             // lbSumaAprobata
             // 
@@ -88,7 +92,6 @@
             this.cbStudent.Text = "Student";
             this.cbStudent.UseVisualStyleBackColor = true;
             this.cbStudent.CheckedChanged += new System.EventHandler(this.cbStudent_CheckedChanged);
-            this.cbStudent.CheckStateChanged += new System.EventHandler(this.CbStudent_CheckStateChanged);
             // 
             // lbDataCredit
             // 
@@ -145,6 +148,10 @@
             this.lb_perioadaCredit.TabIndex = 6;
             this.lb_perioadaCredit.Text = "Perioada credit";
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // CreditNou
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -163,6 +170,7 @@
             this.Name = "CreditNou";
             this.Text = "CreditNou";
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CreditNou_MouseMove);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -179,5 +187,6 @@
         private System.Windows.Forms.Label lbPerioadaDeGratiere;
         private System.Windows.Forms.Button btn_aplicaCredit;
         private System.Windows.Forms.Label lb_perioadaCredit;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }
