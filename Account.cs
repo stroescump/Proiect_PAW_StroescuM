@@ -30,18 +30,25 @@ namespace Proiect_PAW_StroescuM
             userReceiverText += s + "!";
             lbUser_Logged.Text += userReceiverText;
             this.CNP = CNP;
+            verifyIfStudent();
+
             try
             {
                 string query = "Select * from Credite where CNP='" + CNP + "'";
                 OleDbCommand command = new OleDbCommand(query, connection);
                 connection.Open();
                 OleDbDataReader reader = command.ExecuteReader();
-                lvCredite.Columns.Add("Perioada de gratie");
+                if (isStudent)
+                {
+                    lvCredite.Columns.Add("Perioada de gratie");
+                    lvCredite.Size = new Size(lvCredite.Width + 150, lvCredite.Height);
+                    lvCredite.Columns[lvCredite.Columns.Count - 1].Width = 150;
+                }
+
                 while (reader.Read())
                 {
                     if (reader["dobanda"].ToString() == "3")
                     {
-                        isStudent = true;
                         CreditStudiu c = new CreditStudiu(DateTime.Parse(reader["dataCredit"].ToString()), double.Parse(reader["sumaAprobata"].ToString()),
                             int.Parse(reader["perioadaCredit"].ToString()), int.Parse(reader["perioadaDeGratie"].ToString()));
                         ListViewItem item = lvCredite.Items.Add((lvCredite.Items.Count + 1).ToString());
@@ -51,13 +58,12 @@ namespace Proiect_PAW_StroescuM
                         item.SubItems.Add(c.CalculeazaDobanda().ToString());
                         item.SubItems.Add(c.CalculeazaCredit().ToString());
                         item.SubItems.Add(CreditStudiu.DOBANDA.ToString() + "%");
-                        item.SubItems.Add(c.PerioadaDeGratie.ToString() + " ani");
+                        item.SubItems.Add(c.PerioadaDeGratie.ToString() + " luni");
                         listaCredite.Add(c);
                         cuantumTotalCredite += c.CalculeazaCredit();
                     }
                     else
                     {
-                        isStudent = false;
                         Credite c = new Credite(DateTime.Parse(reader["dataCredit"].ToString()), double.Parse(reader["sumaAprobata"].ToString()),
                             int.Parse(reader["perioadaCredit"].ToString()));
                         ListViewItem item = lvCredite.Items.Add((lvCredite.Items.Count + 1).ToString());
@@ -72,6 +78,7 @@ namespace Proiect_PAW_StroescuM
                     }
                 }
                 reader.Close();
+                connection.Close();
                 counterForListaCredite = listaCredite.Count;
                 Console.WriteLine("Counter initial: " + counterForListaCredite);
             }
@@ -79,6 +86,38 @@ namespace Proiect_PAW_StroescuM
             {
                 MessageBox.Show(ex.Message);
                 //
+            }
+        }
+
+        private void verifyIfStudent()
+        {
+            try
+            {
+                string query = "Select * from Clienti where CNP='" + CNP + "'";
+                OleDbCommand command = new OleDbCommand(query, connection);
+                connection.Open();
+                OleDbDataReader reader = command.ExecuteReader();
+                string numarMatricol = "";
+                string numeInstitutie = "";
+                while (reader.Read())
+                {
+                    numarMatricol = reader["numarMatricol"].ToString();
+                    numeInstitutie = reader["numeInstitutie"].ToString();
+                }
+                reader.Close();
+                connection.Close();
+                if (numarMatricol != "" && numeInstitutie != "")
+                {
+                    isStudent = true;
+                }
+                else
+                {
+                    isStudent = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Eroare la query pe tabela Clienti pt. a determina isStudent!" + Environment.NewLine + ex.Message);
             }
         }
 
@@ -295,6 +334,7 @@ namespace Proiect_PAW_StroescuM
                     lvCredite.Items.Add((i + 1).ToString());
                     for (int j = i; j < (lvCredite.Items).Count; j++)
                     {
+                        Console.WriteLine(listaCredite[i]);
                         if (listaCredite[i] is CreditStudiu)
                         {
                             (lvCredite.Items[j]).SubItems.Add((((CreditStudiu)listaCredite[i]).GetDateTime.ToShortDateString()));
@@ -303,7 +343,7 @@ namespace Proiect_PAW_StroescuM
                             (lvCredite.Items[j]).SubItems.Add((((CreditStudiu)listaCredite[i]).CalculeazaDobanda().ToString()));
                             (lvCredite.Items[j]).SubItems.Add((((CreditStudiu)listaCredite[i]).CalculeazaCredit().ToString()));
                             (lvCredite.Items[j]).SubItems.Add((CreditStudiu.DOBANDA.ToString() + "%"));
-                            (lvCredite.Items[j]).SubItems.Add(((CreditStudiu)listaCredite[i]).PerioadaDeGratie.ToString() + " ani");
+                            (lvCredite.Items[j]).SubItems.Add(((CreditStudiu)listaCredite[i]).PerioadaDeGratie.ToString() + " luni");
                             cuantumTotalCredite += ((CreditStudiu)listaCredite[i]).CalculeazaCredit();
                         }
                         else

@@ -43,9 +43,21 @@ namespace Proiect_PAW_StroescuM
 
         private void btn_aplicaCredit_Click(object sender, EventArgs e)
         {
-            string query = "INSERT into Credite ([sumaAprobata],[perioadaCredit],[dobanda],[totalDePlata]," +
+            string queryCreditStudenti = "INSERT into Credite ([sumaAprobata],[perioadaCredit],[dobanda],[totalDePlata]," +
                 "[dataCredit],[perioadaDeGratie],[CNP]) values(?,?,?,?,?,?,?)";
-            OleDbCommand command = new OleDbCommand(query, connection);
+
+            string queryCreditSimplu = "INSERT into Credite ([sumaAprobata],[perioadaCredit],[dobanda],[totalDePlata]," +
+                "[dataCredit],[perioadaDeGratie],[CNP]) values(?,?,?,?,?,?,?)";
+            OleDbCommand command;
+            if (isStudent && cbStudent.Checked == true)
+            {
+                command = new OleDbCommand(queryCreditStudenti, connection);
+            }
+            else
+            {
+                command = new OleDbCommand(queryCreditSimplu, connection);
+            }
+
 
             if (clbPerioadaDeCreditare.CheckedItems.Count == 0)
             {
@@ -70,16 +82,18 @@ namespace Proiect_PAW_StroescuM
                         }
                     }
                     else perioadaDeGratiere = "0";
-                    CreditStudiu creditNou = new CreditStudiu(DateTime.Now, int.Parse(tb_sumaCeruta.Text),
+                    CreditStudiu creditNouStudii = new CreditStudiu(DateTime.Now, int.Parse(tb_sumaCeruta.Text),
                         int.Parse(clbPerioadaDeCreditare.CheckedItems[0].ToString()),
                         int.Parse(perioadaDeGratiere));
-                    referenceForm.GetListaCredite.Add(creditNou);
+                    Credite creditNouSimplu = new Credite(DateTime.Now, int.Parse(tb_sumaCeruta.Text),
+                        int.Parse(clbPerioadaDeCreditare.CheckedItems[0].ToString()));
+
                     if (isStudent)
                     {
                         if (cbStudent.CheckState == CheckState.Checked)
                         {
                             command.Parameters.AddWithValue("dobanda", "3");
-                            command.Parameters.AddWithValue("totalDePlata", ((CreditStudiu)creditNou).CalculeazaCredit().ToString());
+                            command.Parameters.AddWithValue("totalDePlata", ((CreditStudiu)creditNouStudii).CalculeazaCredit().ToString());
                             command.Parameters.AddWithValue("dataCredit", DateTime.Now.ToShortDateString());
                             command.Parameters.AddWithValue("perioadaDeGratie", perioadaDeGratiere);
                             command.Parameters.AddWithValue("CNP", this.CNP);
@@ -87,7 +101,7 @@ namespace Proiect_PAW_StroescuM
                         else
                         {
                             command.Parameters.AddWithValue("dobanda", "12");
-                            command.Parameters.AddWithValue("totalDePlata", (creditNou).CalculeazaCredit().ToString());
+                            command.Parameters.AddWithValue("totalDePlata", (creditNouSimplu).CalculeazaCredit().ToString());
                             command.Parameters.AddWithValue("dataCredit", DateTime.Now.ToShortDateString());
                             command.Parameters.AddWithValue("perioadaDeGratie", perioadaDeGratiere);
                             command.Parameters.AddWithValue("CNP", this.CNP);
@@ -96,7 +110,7 @@ namespace Proiect_PAW_StroescuM
                     else
                     {
                         command.Parameters.AddWithValue("dobanda", "12");
-                        command.Parameters.AddWithValue("totalDePlata", (creditNou).CalculeazaCredit().ToString());
+                        command.Parameters.AddWithValue("totalDePlata", (creditNouSimplu).CalculeazaCredit().ToString());
                         command.Parameters.AddWithValue("dataCredit", DateTime.Now.ToShortDateString());
                         command.Parameters.AddWithValue("perioadaDeGratie", perioadaDeGratiere);
                         command.Parameters.AddWithValue("CNP", this.CNP);
@@ -105,6 +119,14 @@ namespace Proiect_PAW_StroescuM
                     connection.Open();
                     command.ExecuteNonQuery();
                     MessageBox.Show("Credit accesat cu succes!");
+                    if (isStudent && cbStudent.Checked == true)
+                    {
+                        referenceForm.GetListaCredite.Add(creditNouStudii);
+                    }
+                    else
+                    {
+                        referenceForm.GetListaCredite.Add(creditNouSimplu);
+                    }
                     this.Hide();
                 }
                 catch (Exception ex)
@@ -174,6 +196,7 @@ namespace Proiect_PAW_StroescuM
                 customLabelErrorForSuma.Text = "Suma trebuie >= 100 lei";
                 customLabelErrorForSuma.Location = new Point(tb_sumaCeruta.Location.X + tb_sumaCeruta.Size.Width + 10,
                     tb_sumaCeruta.Location.Y + 2);
+                customLabelErrorForSuma.AutoSize = true;
                 this.Controls.Add(customLabelErrorForSuma);
             }
             if (tb_sumaCeruta.Text.Length >= 3)
@@ -181,6 +204,19 @@ namespace Proiect_PAW_StroescuM
                 Console.WriteLine("TEXT > 3");
                 customLabelErrorForSuma.Visible = false;
             }
+        }
+
+        private void tb_sumaCeruta_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            if (!char.IsDigit(e.KeyChar))
+            {
+                if (!char.IsControl(e.KeyChar))
+                {
+                    e.Handled = true;
+                }
+            }
+
         }
     }
 }

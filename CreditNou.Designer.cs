@@ -47,9 +47,11 @@
             this.tb_sumaCeruta.Location = new System.Drawing.Point(13, 45);
             this.tb_sumaCeruta.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tb_sumaCeruta.Name = "tb_sumaCeruta";
+            this.tb_sumaCeruta.ShortcutsEnabled = false;
             this.tb_sumaCeruta.Size = new System.Drawing.Size(210, 26);
             this.tb_sumaCeruta.TabIndex = 0;
             this.tb_sumaCeruta.TextChanged += new System.EventHandler(this.tb_sumaCeruta_TextChanged);
+            this.tb_sumaCeruta.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_sumaCeruta_KeyPress);
             // 
             // lbSumaAprobata
             // 
