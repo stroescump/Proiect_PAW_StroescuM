@@ -9,18 +9,20 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
 using Proiect_PAW_StroescuM.Singletons;
+using Proiect_PAW_StroescuM.Properties;
+using Proiect_PAW_StroescuM.Interfaces;
 
 namespace Proiect_PAW_StroescuM
 {
-    public partial class Login : Form
+    public partial class Login : Form, INightMode
     {
-        private bool nightMode = false;
+        private bool nightMode = Settings.Default.isNightMode;
         string provider = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = banking.accdb";
         private Hash_SHA256 encryptionClassInstance = Hash_SHA256.getInstance();
         public Login()
         {
             InitializeComponent();
-
+            setNightMode(nightMode, this);
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -77,10 +79,15 @@ namespace Proiect_PAW_StroescuM
 
         private void modDeNoapteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!nightMode)
+            nightMode = !nightMode;
+            setNightMode(nightMode, this);
+        }
+
+        public void setNightMode(bool isNight, Form parent)
+        {
+            if (isNight)
             {
-                nightMode = true;
-                this.BackColor = Color.Black;
+                parent.BackColor = Color.Black;
                 lbPass.ForeColor = Color.WhiteSmoke;
                 lbUser.ForeColor = Color.WhiteSmoke;
 
@@ -97,8 +104,7 @@ namespace Proiect_PAW_StroescuM
             }
             else
             {
-                nightMode = false;
-                this.BackColor = Color.WhiteSmoke;
+                parent.BackColor = Color.WhiteSmoke;
                 lbPass.ForeColor = Color.Black;
                 lbUser.ForeColor = Color.Black;
 
