@@ -51,53 +51,66 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account.cs">
+    <Compile Include="Exceptions\ExceptieCreareInstanteMultipleSingleton.cs" />
+    <Compile Include="Exceptions\NullPointerExceptionCustom.cs" />
+    <Compile Include="Forms\Account.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Account.Designer.cs">
+    <Compile Include="Forms\Account.Designer.cs">
       <DependentUpon>Account.cs</DependentUpon>
     </Compile>
-    <Compile Include="Clienti.cs" />
-    <Compile Include="Credite.cs" />
-    <Compile Include="CreditNou.cs">
+    <Compile Include="Data\Clienti.cs" />
+    <Compile Include="Data\Credite.cs" />
+    <Compile Include="Forms\CreditNou.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreditNou.Designer.cs">
+    <Compile Include="Forms\CreditNou.Designer.cs">
       <DependentUpon>CreditNou.cs</DependentUpon>
     </Compile>
-    <Compile Include="CreditStudiu.cs" />
-    <Compile Include="Login.cs">
+    <Compile Include="Data\CreditStudiu.cs" />
+    <Compile Include="Forms\Hashing.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login.Designer.cs">
+    <Compile Include="Forms\Hashing.Designer.cs">
+      <DependentUpon>Hashing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="ICredit.cs" />
-    <Compile Include="Masteranzi.cs" />
-    <Compile Include="PieChart.cs">
+    <Compile Include="Interfaces\ICredit.cs" />
+    <Compile Include="Data\Masteranzi.cs" />
+    <Compile Include="Forms\PieChart.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PieChart.Designer.cs">
+    <Compile Include="Forms\PieChart.Designer.cs">
       <DependentUpon>PieChart.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IDataTransfer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Register.cs">
+    <Compile Include="Forms\Register.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Register.Designer.cs">
+    <Compile Include="Forms\Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Account.resx">
+    <Compile Include="Singletons\Hash_SHA256.cs" />
+    <EmbeddedResource Include="Forms\Account.resx">
       <DependentUpon>Account.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CreditNou.resx">
+    <EmbeddedResource Include="Forms\CreditNou.resx">
       <DependentUpon>CreditNou.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.resx">
+    <EmbeddedResource Include="Forms\Hashing.resx">
+      <DependentUpon>Hashing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PieChart.resx">
+    <EmbeddedResource Include="Forms\PieChart.resx">
       <DependentUpon>PieChart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -109,7 +122,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Register.resx">
+    <EmbeddedResource Include="Forms\Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\DataSources\Credite.datasource" />

@@ -10,10 +10,17 @@ using System.Windows.Forms;
 using System.Data.OleDb;
 using System.IO;
 using System.Drawing.Printing;
+using System.Security.Cryptography;
+using Proiect_PAW_StroescuM.Forms;
+using Proiect_PAW_StroescuM.Interfaces;
+using Proiect_PAW_StroescuM.Properties;
+using Proiect_PAW_StroescuM.Singletons;
+using Proiect_PAW_StroescuM.Exceptions;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Proiect_PAW_StroescuM
 {
-    public partial class Account : Form
+    public partial class Account : Form, IDataTransfer
     {
         private String userReceiverText = "";
         static String provider = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = banking.accdb";
@@ -23,15 +30,23 @@ namespace Proiect_PAW_StroescuM
         private List<Credite> listaCredite = new List<Credite>();
         private double cuantumTotalCredite;
         private int counterForListaCredite;
+        private string shaKeyForEncryption;
+        private Hashing hashingForm;
+        private Hash_SHA256 encryptionClassInstance;
+        private string currentUserEmailAddress;
+        private Login loginInstance;
 
-        public Account(String s, String CNP)
+        public Account(String s, String CNP, String emailAddress, Hash_SHA256 encryptionInstance, Login loginFormInstance)
         {
             InitializeComponent();
             userReceiverText += s + "!";
             lbUser_Logged.Text += userReceiverText;
             this.CNP = CNP;
+            this.currentUserEmailAddress = emailAddress;
             verifyIfStudent();
-
+            encryptionClassInstance = encryptionInstance;
+            loginInstance = loginFormInstance;
+            hashingForm = new Hashing(this, encryptionClassInstance);
             try
             {
                 string query = "Select * from Credite where CNP='" + CNP + "'";
@@ -85,7 +100,6 @@ namespace Proiect_PAW_StroescuM
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                //
             }
         }
 
@@ -135,37 +149,38 @@ namespace Proiect_PAW_StroescuM
         {
             progressBar.Visible = true;
             progressBar.Value = 0;
-            MessageBox.Show("Salvarea fisierelor se va face in format .txt de tip CSV fara encriptare!" + Environment.NewLine
-                + "A NU SE DISTRIBUI!");
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "(*.txt)|*.txt";
+            MessageBox.Show("Salvarea fisierelor va utiliza encriptare SHA-256bit!");
+            hashingForm.ShowDialog();
             try
             {
-                if (dialog.ShowDialog() == DialogResult.OK)
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                FileStream fileStream = new FileStream("export_listaCredite_" +
+                    DateTime.Now.Day + "_" +
+                    DateTime.Now.Hour + "_" +
+                    DateTime.Now.Minute + "_" +
+                    DateTime.Now.Millisecond + ".smp", FileMode.Create, FileAccess.Write);
+                StringBuilder builder = new StringBuilder();
+                builder.AppendLine(shaKeyForEncryption);
+                for (int i = 0; i < listaCredite.Count; i++)
                 {
-                    StreamWriter writer = new StreamWriter(dialog.FileName);
-                    writer.WriteLine(CNP);
-                    for (int i = 0; i < listaCredite.Count; i++)
+                    if (progressBar.Value < 100)
                     {
-                        if (progressBar.Value < 100)
-                        {
-                            progressBar.Value += listaCredite.Count / 100;
-                        }
-                        if (listaCredite[i] is CreditStudiu)
-
-                            writer.WriteLine(((CreditStudiu)listaCredite[i]).TransformCreditToCsv());
-                        else
-                        {
-                            writer.WriteLine(listaCredite[i].TransformCreditToCsv());
-                        }
+                        progressBar.Value += listaCredite.Count / 100;
                     }
+                    if (listaCredite[i] is CreditStudiu)
 
-                    writer.Close();
-                    progressBar.Value += 100 - progressBar.Value;
-                    MessageBox.Show("Salvarea s-a efectuat cu succes!");
-                    progressBar.Value = 0;
-                    progressBar.Visible = false;
+                        builder.AppendLine(((CreditStudiu)listaCredite[i]).TransformCreditToCsv());
+                    else
+                    {
+                        builder.AppendLine(listaCredite[i].TransformCreditToCsv());
+                    }
                 }
+                binaryFormatter.Serialize(fileStream, builder.ToString());
+                fileStream.Close();
+                progressBar.Value += 100 - progressBar.Value;
+                MessageBox.Show("Salvarea s-a efectuat cu succes!");
+                progressBar.Value = 0;
+                progressBar.Visible = false;
             }
             catch (Exception ex)
             {
@@ -176,19 +191,21 @@ namespace Proiect_PAW_StroescuM
 
         private void displayCreditFromTxtFile(Object path)
         {
-            StreamReader reader = null;
+            BinaryFormatter bf = new BinaryFormatter();
+            StringReader reader = null;
             if (path is OpenFileDialog)
             {
-                reader = new StreamReader(((OpenFileDialog)path).FileName);
-
+                FileStream stream = new FileStream(((OpenFileDialog)path).FileName, FileMode.Open, FileAccess.Read);
+                reader = new StringReader((string)bf.Deserialize(stream));
             }
             else if (path is string)
             {
-                reader = new StreamReader((string)path);
+                FileStream stream = new FileStream((string)path, FileMode.Open, FileAccess.Read);
+                reader = new StringReader((string)bf.Deserialize(stream));
             }
 
-            string gdpr = reader.ReadLine(); // Antentul fisierului cu detalii despre persoana
-            if (CNP.Equals(gdpr))
+            string computedHashForCurrentUserEmail = encryptionClassInstance.calculHash(currentUserEmailAddress);
+            if (computedHashForCurrentUserEmail.Equals(reader.ReadLine()))
             {
                 string[] creditParsed = new string[9];
                 string creditTxt;
@@ -227,24 +244,24 @@ namespace Proiect_PAW_StroescuM
             }
             else
             {
-                MessageBox.Show("Aceste date nu va apartin! Va rugam sa utilizati doar date asociate contului dvs.!");
+                MessageBox.Show("Aceste date nu va apartin! Va rugam sa utilizati doar date asociate sau trimise contului dvs.!");
             }
             reader.Close();
         }
 
         private void restaurareToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "(*.txt)|*.txt";
+            openFileDialog1.Filter = "(*.smp)|*.smp";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                displayCreditFromTxtFile(openFileDialog1.FileName);
+                displayCreditFromTxtFile(openFileDialog1);
             }
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            new Login().ShowDialog();
+            this.Dispose();
+            loginInstance.Show();
         }
 
         public void printDataListView(object sender, PrintPageEventArgs args)
@@ -360,6 +377,11 @@ namespace Proiect_PAW_StroescuM
                     }
                 }
             }
+        }
+
+        public void passData(string message)
+        {
+            shaKeyForEncryption = message;
         }
     }
 }

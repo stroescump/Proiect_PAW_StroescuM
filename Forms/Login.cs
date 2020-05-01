@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
+using Proiect_PAW_StroescuM.Singletons;
 
 namespace Proiect_PAW_StroescuM
 {
@@ -15,6 +16,7 @@ namespace Proiect_PAW_StroescuM
     {
         private bool nightMode = false;
         string provider = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = banking.accdb";
+        private Hash_SHA256 encryptionClassInstance = Hash_SHA256.getInstance();
         public Login()
         {
             InitializeComponent();
@@ -36,6 +38,7 @@ namespace Proiect_PAW_StroescuM
                     string CNP = null;
                     string passwd = null;
                     string numeClient = null;
+                    string emailAddress = tbUser.Text;
                     while (reader.Read())
                     {
 
@@ -46,12 +49,11 @@ namespace Proiect_PAW_StroescuM
                     if (numeClient != null && tbPass.Text.Equals(passwd) && CNP != null)
                     {
                         MessageBox.Show("Login Successful!");
-                        Account form = new Account(numeClient, CNP);
+                        Account form = new Account(numeClient, CNP, emailAddress, encryptionClassInstance, this);
                         tbUser.Text = "";
                         tbPass.Text = "";
                         this.Hide();
                         form.ShowDialog();
-
                     }
                     else
                     {

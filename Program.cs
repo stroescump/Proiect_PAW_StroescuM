@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Proiect_PAW_StroescuM.Forms;
 
 namespace Proiect_PAW_StroescuM
 {
@@ -17,7 +18,6 @@ namespace Proiect_PAW_StroescuM
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Login());
-
         }
     }
 }
