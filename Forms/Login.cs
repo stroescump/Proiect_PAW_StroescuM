@@ -18,7 +18,7 @@ namespace Proiect_PAW_StroescuM
     public partial class Login : Form
     {
         private bool isNightMode = Settings.Default.isNightMode;
-        string provider = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = banking.accdb";
+        string provider = Settings.Default.Provider;
         private Hash_SHA256 encryptionClassInstance = Hash_SHA256.getInstance();
         private HelperNightMode helperNightMode = new HelperNightMode();
         public Login()
@@ -26,8 +26,15 @@ namespace Proiect_PAW_StroescuM
             InitializeComponent();
             tbUser.Focus();
             helperNightMode.setColorTheme(isNightMode, this);
+            if (isNightMode)
+            {
+                nightModeMenuStrip.Items[0].Text = "Mod de zi";
+            }
+            else
+            {
+                nightModeMenuStrip.Items[0].Text = "Mod de noapte";
+            }
         }
-
         private void btnLogin_Click(object sender, EventArgs e)
         {
             if (tbUser.TextLength != 0 && tbPass.TextLength != 0)
@@ -86,10 +93,12 @@ namespace Proiect_PAW_StroescuM
             if (isNightMode)
             {
                 nightModeMenuStrip.Items[0].Text = "Mod de zi";
+                lb_nightMode.Text = "**Pentru a reveni la modul de zi, apasa click dreapta pe formular";
             }
             else
             {
                 nightModeMenuStrip.Items[0].Text = "Mod de noapte";
+                lb_nightMode.Text = "**Pentru a activa modul de noapte, apasa click dreapta pe formular";
             }
             helperNightMode.setNightMode(isNightMode, this);
         }

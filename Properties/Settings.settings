@@ -5,5 +5,11 @@
     <Setting Name="isNightMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="CreditQuery" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">INSERT into Credite ([sumaAprobata],[perioadaCredit],[dobanda],[totalDePlata],[dataCredit],[perioadaDeGratie],[CNP]) values(?,?,?,?,?,?,?)</Value>
+    </Setting>
+    <Setting Name="Provider" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Provider = Microsoft.ACE.OLEDB.12.0; Data Source = banking.accdb</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

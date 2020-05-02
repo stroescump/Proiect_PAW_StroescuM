@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace Proiect_PAW_StroescuM
 {
     public partial class CreditNou : Form
@@ -47,25 +48,20 @@ namespace Proiect_PAW_StroescuM
 
         private void btn_aplicaCredit_Click(object sender, EventArgs e)
         {
-            string queryCreditStudenti = "INSERT into Credite ([sumaAprobata],[perioadaCredit],[dobanda],[totalDePlata]," +
-                "[dataCredit],[perioadaDeGratie],[CNP]) values(?,?,?,?,?,?,?)";
+            string creditQuery = Settings.Default.CreditQuery;
+            MessageBox.Show(creditQuery);
+            OleDbCommand command = new OleDbCommand(creditQuery, connection);
 
-            string queryCreditSimplu = "INSERT into Credite ([sumaAprobata],[perioadaCredit],[dobanda],[totalDePlata]," +
-                "[dataCredit],[perioadaDeGratie],[CNP]) values(?,?,?,?,?,?,?)";
-            OleDbCommand command;
-            if (isStudent && cbStudent.Checked == true)
+            if (clbPerioadaDeCreditare.CheckedItems.Count == 0 || (tb_sumaCeruta.Text.Length) == 0)
             {
-                command = new OleDbCommand(queryCreditStudenti, connection);
-            }
-            else
-            {
-                command = new OleDbCommand(queryCreditSimplu, connection);
-            }
-
-
-            if (clbPerioadaDeCreditare.CheckedItems.Count == 0)
-            {
-                MessageBox.Show("Trebuie sa selectezi o perioada de creditare din cele oferite!");
+                if ((tb_sumaCeruta.Text.Length) == 0 || Int32.Parse(tb_sumaCeruta.Text) < 100)
+                {
+                    MessageBox.Show("Valoarea creditului trebuie sa fie mai mare de 99 lei!");
+                }
+                else
+                {
+                    MessageBox.Show("Trebuie sa selectezi o perioada de creditare din cele oferite!");
+                }
             }
             else
             {
@@ -196,16 +192,16 @@ namespace Proiect_PAW_StroescuM
             if (tb_sumaCeruta.Text.Length < 3)
             {
                 customLabelErrorForSuma.Visible = true;
-                Console.WriteLine("TEXT < 3");
-                customLabelErrorForSuma.Text = "Suma trebuie >= 100 lei";
-                customLabelErrorForSuma.Location = new Point(tb_sumaCeruta.Location.X + tb_sumaCeruta.Size.Width + 10,
+                customLabelErrorForSuma.Text = "Suma trebuie > 99 lei";
+                customLabelErrorForSuma.ForeColor = Settings.Default.isNightMode == true ? Color.WhiteSmoke : Color.DarkSlateGray;
+                customLabelErrorForSuma.Location = new Point(
+                    tb_sumaCeruta.Location.X + tb_sumaCeruta.Size.Width + 10,
                     tb_sumaCeruta.Location.Y + 2);
                 customLabelErrorForSuma.AutoSize = true;
                 this.Controls.Add(customLabelErrorForSuma);
             }
             if (tb_sumaCeruta.Text.Length >= 3)
             {
-                Console.WriteLine("TEXT > 3");
                 customLabelErrorForSuma.Visible = false;
             }
         }

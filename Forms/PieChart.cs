@@ -17,25 +17,24 @@ namespace Proiect_PAW_StroescuM
         private List<Credite> listaCrediteCurente;
         private HelperNightMode helperNightMode = new HelperNightMode();
         private double cuantumTotalCredite = 0;
-        Brush[] brushes = {
-                new SolidBrush(Color.Black),
-                new SolidBrush(Color.Blue),
-                new SolidBrush(Color.Chartreuse),
-                new SolidBrush(Color.Coral),
-                new SolidBrush(Color.Red),
-                new SolidBrush(Color.Bisque),
-                new SolidBrush(Color.DarkGoldenrod)};
+        List<Brush> brushes = new List<Brush>();
         public PieChart(List<Credite> listaCrediteCurente, double cuantumTotalCredite)
         {
+            initBrushes();
             this.listaCrediteCurente = listaCrediteCurente;
             this.cuantumTotalCredite = cuantumTotalCredite;
             InitializeComponent();
             helperNightMode.setColorTheme(Settings.Default.isNightMode, this);
-            //Daca suntem in cazul de nightmode, schimbam culoarea negru
-            if (Settings.Default.isNightMode)
+        }
+
+        private void initBrushes()
+        {
+            foreach (KnownColor color in Enum.GetValues(typeof(KnownColor)))
             {
-                brushes[0] = new SolidBrush(Color.DimGray);
+                System.Drawing.Color colorObj = System.Drawing.Color.FromKnownColor(color);
+                brushes.Add(new SolidBrush(colorObj));
             }
+            brushes.RemoveRange(0, 34);
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)

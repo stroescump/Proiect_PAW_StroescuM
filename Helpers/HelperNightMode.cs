@@ -47,6 +47,10 @@ namespace Proiect_PAW_StroescuM.Helpers
             {
                 for (int i = 0; i < container.Controls.Count; i++)
                 {
+                    if (container.Controls[i] is Label && container.Controls[i].Name == "lb_nightMode")
+                    {
+                        container.Controls[i].Text = "**Pentru a reveni la modul de zi, apasa click dreapta pe formular";
+                    }
                     container.Controls[i].ForeColor = Color.FromArgb(Color.DarkSlateGray.ToArgb() ^ 0xffffff);
                     container.Controls[i].BackColor = Color.FromArgb(Color.WhiteSmoke.ToArgb() ^ 0xffffff);
                 }
@@ -56,6 +60,10 @@ namespace Proiect_PAW_StroescuM.Helpers
             {
                 for (int i = 0; i < container.Controls.Count; i++)
                 {
+                    if (container.Controls[i] is Label && container.Controls[i].Name == "lb_nightMode")
+                    {
+                        container.Controls[i].Text = "**Pentru a activa modul de noapte, apasa click dreapta pe formular";
+                    }
                     container.Controls[i].ForeColor = Color.DarkSlateGray;
                     container.Controls[i].BackColor = Color.WhiteSmoke;
                 }
