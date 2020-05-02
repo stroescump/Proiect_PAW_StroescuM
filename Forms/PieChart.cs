@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Proiect_PAW_StroescuM.Helpers;
+using Proiect_PAW_StroescuM.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,31 +15,97 @@ namespace Proiect_PAW_StroescuM
     public partial class PieChart : Form
     {
         private List<Credite> listaCrediteCurente;
+        private HelperNightMode helperNightMode = new HelperNightMode();
+        private double cuantumTotalCredite = 0;
+        Brush[] brushes = {
+                new SolidBrush(Color.Black),
+                new SolidBrush(Color.Blue),
+                new SolidBrush(Color.Chartreuse),
+                new SolidBrush(Color.Coral),
+                new SolidBrush(Color.Red),
+                new SolidBrush(Color.Bisque),
+                new SolidBrush(Color.DarkGoldenrod)};
         public PieChart(List<Credite> listaCrediteCurente, double cuantumTotalCredite)
         {
             this.listaCrediteCurente = listaCrediteCurente;
+            this.cuantumTotalCredite = cuantumTotalCredite;
             InitializeComponent();
-            chart1.Titles.Add("Distributia procentuala a cuantumului creditelor pe rol");
+            helperNightMode.setColorTheme(Settings.Default.isNightMode, this);
+            //Daca suntem in cazul de nightmode, schimbam culoarea negru
+            if (Settings.Default.isNightMode)
+            {
+                brushes[0] = new SolidBrush(Color.DimGray);
+            }
+        }
 
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = panel1.CreateGraphics();
+            double sumaCredite = 0;
             for (int i = 0; i < listaCrediteCurente.Count; i++)
             {
                 if (listaCrediteCurente[i] is CreditStudiu)
                 {
                     double valoareCredit = ((CreditStudiu)listaCrediteCurente[i]).CalculeazaCredit();
+                    sumaCredite += valoareCredit;
                     double procentajCreditChart = (100 * valoareCredit) / cuantumTotalCredite;
-                    chart1.Series["Credite"].Points.AddXY(valoareCredit.ToString() + " RON" + Environment.NewLine +
-                        Math.Ceiling(procentajCreditChart).ToString() + "%",
-                        procentajCreditChart.ToString());
                 }
                 else
                 {
                     double valoareCredit = listaCrediteCurente[i].CalculeazaCredit();
+                    sumaCredite += valoareCredit;
                     double procentajCreditChart = (100 * valoareCredit) / cuantumTotalCredite;
-                    chart1.Series["Credite"].Points.AddXY(valoareCredit.ToString() + " RON" + Environment.NewLine +
-                        Math.Ceiling(procentajCreditChart).ToString() + "%",
-                        procentajCreditChart.ToString());
                 }
+            }
+            double sumSlices = 0;
+            int x, y, w, h = 0;
+            x = this.Size.Width - 180;
+            y = 20;
+            w = 40;
+            h = 10;
+            try
+            {
+                g.DrawString("Distributia cuantumului creditelor",
+                    new Font(FontFamily.GenericSansSerif, 10),
+                    new SolidBrush(Settings.Default.isNightMode == true ? Color.WhiteSmoke : Color.DarkSlateGray),
+                    new PointF(55, 15));
+                for (int i = 0; i < listaCrediteCurente.Count; i++)
+                {
+                    if (listaCrediteCurente[i] is CreditStudiu)
+                    {
+                        g.FillPie(brushes[i % listaCrediteCurente.Count],
+                            new Rectangle(50, 50, 200, 200), i == 0 ? 0 : float.Parse(sumSlices.ToString()),
+                            float.Parse((360f / sumaCredite * ((CreditStudiu)listaCrediteCurente[i]).CalculeazaCredit()).ToString()));
+                        g.FillRectangle(brushes[i % listaCrediteCurente.Count], new Rectangle(x, y, w, h));
+                        sumSlices += 360f / sumaCredite * ((CreditStudiu)listaCrediteCurente[i]).CalculeazaCredit();
 
+                        Label details = new Label();
+                        details.Location = new Point(x + 50, y - 2);
+                        details.Text = (Math.Round(100 / sumaCredite * ((CreditStudiu)listaCrediteCurente[i]).CalculeazaCredit()).ToString() + "%" + " - " +
+                            (Math.Round(((CreditStudiu)listaCrediteCurente[i]).CalculeazaCredit()).ToString()) + " lei");
+                        panel1.Controls.Add(details);
+                        y += 25;
+                    }
+                    else
+                    {
+                        g.FillPie(brushes[i % listaCrediteCurente.Count],
+                            new Rectangle(50, 50, 200, 200), i == 0 ? 0 : float.Parse(sumSlices.ToString()),
+                            float.Parse((360f / sumaCredite * (listaCrediteCurente[i]).CalculeazaCredit()).ToString()));
+                        g.FillRectangle(brushes[i % listaCrediteCurente.Count], new Rectangle(x, y, w, h));
+                        sumSlices += 360f / sumaCredite * listaCrediteCurente[i].CalculeazaCredit();
+
+                        Label details = new Label();
+                        details.Location = new Point(x + 50, y - 2);
+                        details.Text = (Math.Round(100 / sumaCredite * listaCrediteCurente[i].CalculeazaCredit()).ToString() + "%" + " - " +
+                            Math.Round(listaCrediteCurente[i].CalculeazaCredit()).ToString() + " lei");
+                        panel1.Controls.Add(details);
+                        y += 25;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

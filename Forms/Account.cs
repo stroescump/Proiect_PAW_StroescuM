@@ -17,6 +17,7 @@ using Proiect_PAW_StroescuM.Properties;
 using Proiect_PAW_StroescuM.Singletons;
 using Proiect_PAW_StroescuM.Exceptions;
 using System.Runtime.Serialization.Formatters.Binary;
+using Proiect_PAW_StroescuM.Helpers;
 
 namespace Proiect_PAW_StroescuM
 {
@@ -35,17 +36,22 @@ namespace Proiect_PAW_StroescuM
         private Hash_SHA256 encryptionClassInstance;
         private string currentUserEmailAddress;
         private Login loginInstance;
+        private HelperNightMode helperNightMode = new HelperNightMode();
+
 
         public Account(String s, String CNP, String emailAddress, Hash_SHA256 encryptionInstance, Login loginFormInstance)
         {
+
             InitializeComponent();
+            loginInstance = loginFormInstance;
+            helperNightMode.setColorTheme(Settings.Default.isNightMode, this);
             userReceiverText += s + "!";
             lbUser_Logged.Text += userReceiverText;
             this.CNP = CNP;
             this.currentUserEmailAddress = emailAddress;
             verifyIfStudent();
             encryptionClassInstance = encryptionInstance;
-            loginInstance = loginFormInstance;
+
             hashingForm = new Hashing(this, encryptionClassInstance);
             try
             {
@@ -95,7 +101,7 @@ namespace Proiect_PAW_StroescuM
                 reader.Close();
                 connection.Close();
                 counterForListaCredite = listaCredite.Count;
-                Console.WriteLine("Counter initial: " + counterForListaCredite);
+                //Console.WriteLine("Counter initial: " + counterForListaCredite);
             }
             catch (Exception ex)
             {
@@ -339,11 +345,11 @@ namespace Proiect_PAW_StroescuM
 
         private void Account_Activated(object sender, EventArgs e)
         {
-            Console.WriteLine("Counter final: " + counterForListaCredite);
+            //Console.WriteLine("Counter final: " + counterForListaCredite);
             if (counterForListaCredite != listaCredite.Count)
             {
                 counterForListaCredite++;
-                Console.WriteLine("Called");
+                //Console.WriteLine("Called");
 
                 lvCredite.Items.Clear();
                 for (int i = 0; i < listaCredite.Count; i++)
@@ -351,7 +357,7 @@ namespace Proiect_PAW_StroescuM
                     lvCredite.Items.Add((i + 1).ToString());
                     for (int j = i; j < (lvCredite.Items).Count; j++)
                     {
-                        Console.WriteLine(listaCredite[i]);
+                        //Console.WriteLine(listaCredite[i]);
                         if (listaCredite[i] is CreditStudiu)
                         {
                             (lvCredite.Items[j]).SubItems.Add((((CreditStudiu)listaCredite[i]).GetDateTime.ToShortDateString()));

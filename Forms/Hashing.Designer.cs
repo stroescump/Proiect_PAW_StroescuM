@@ -51,6 +51,7 @@
             // 
             this.tb_emailEncrypt.BackColor = System.Drawing.SystemColors.HighlightText;
             this.tb_emailEncrypt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tb_emailEncrypt.ForeColor = System.Drawing.Color.DarkSlateGray;
             this.tb_emailEncrypt.Location = new System.Drawing.Point(194, 180);
             this.tb_emailEncrypt.Name = "tb_emailEncrypt";
             this.tb_emailEncrypt.Size = new System.Drawing.Size(413, 26);
@@ -72,11 +73,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tb_emailEncrypt);
             this.Controls.Add(this.btnCriptare);
+            this.ForeColor = System.Drawing.Color.DarkSlateGray;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Hashing";
             this.Text = "Hasing";

@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using Proiect_PAW_StroescuM.Singletons;
 using Proiect_PAW_StroescuM.Exceptions;
 using Proiect_PAW_StroescuM.Interfaces;
+using Proiect_PAW_StroescuM.Helpers;
+using Proiect_PAW_StroescuM.Properties;
 
 namespace Proiect_PAW_StroescuM.Forms
 {
@@ -17,9 +19,11 @@ namespace Proiect_PAW_StroescuM.Forms
     {
         Hash_SHA256 hashingInstance = null;
         Account formReference = null;
+        private HelperNightMode helperNightMode = new HelperNightMode();
         public Hashing(Account AccountFormRef, Hash_SHA256 encryptionInstanceRef)
         {
             InitializeComponent();
+            helperNightMode.setColorTheme(Settings.Default.isNightMode, this);
             formReference = AccountFormRef;
             hashingInstance = encryptionInstanceRef;
         }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Proiect_PAW_StroescuM.Helpers;
+using Proiect_PAW_StroescuM.Properties;
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,12 +22,14 @@ namespace Proiect_PAW_StroescuM
         Label lbNumeInstitutie = new Label();
         Point diferenta;
         Point pozitieDeStart;
+        private HelperNightMode helperNightMode = new HelperNightMode();
 
         TextBox numeInstitutie = new TextBox();
         TextBox nrMatricol = new TextBox();
         public Register()
         {
             InitializeComponent();
+            helperNightMode.setColorTheme(Settings.Default.isNightMode, this);
         }
 
         private void button1_Click(object sender, EventArgs e)

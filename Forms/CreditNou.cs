@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Proiect_PAW_StroescuM.Helpers;
+using Proiect_PAW_StroescuM.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,9 +21,11 @@ namespace Proiect_PAW_StroescuM
         private bool isStudent = false;
         private Account referenceForm;
         private static Label customLabelErrorForSuma = new Label();
+        private HelperNightMode helperNightMode = new HelperNightMode();
         public CreditNou(String CNP, bool isStudent, Account referenceForm)
         {
             InitializeComponent();
+            helperNightMode.setColorTheme(Settings.Default.isNightMode, this);
             tb_sumaCeruta.Focus();
             this.CNP = CNP;
             this.isStudent = isStudent;

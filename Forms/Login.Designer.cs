@@ -35,14 +35,16 @@
             this.tbPass = new System.Windows.Forms.TextBox();
             this.lbPass = new System.Windows.Forms.Label();
             this.lbUser = new System.Windows.Forms.Label();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.nightModeMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.modDeNoapteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
-            this.contextMenuStrip1.SuspendLayout();
+            this.nightModeMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRegister
             // 
+            this.btnRegister.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateGray;
+            this.btnRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRegister.Location = new System.Drawing.Point(430, 386);
             this.btnRegister.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -55,6 +57,8 @@
             // 
             // btnLogin
             // 
+            this.btnLogin.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateGray;
+            this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogin.Location = new System.Drawing.Point(430, 329);
             this.btnLogin.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -67,7 +71,9 @@
             // 
             // tbUser
             // 
+            this.tbUser.BackColor = System.Drawing.Color.White;
             this.tbUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbUser.ForeColor = System.Drawing.Color.DarkSlateGray;
             this.tbUser.Location = new System.Drawing.Point(430, 226);
             this.tbUser.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbUser.Name = "tbUser";
@@ -76,7 +82,10 @@
             // 
             // tbPass
             // 
+            this.tbPass.BackColor = System.Drawing.Color.White;
+            this.tbPass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbPass.ForeColor = System.Drawing.Color.DarkSlateGray;
             this.tbPass.Location = new System.Drawing.Point(430, 280);
             this.tbPass.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbPass.Name = "tbPass";
@@ -106,13 +115,13 @@
             this.lbUser.TabIndex = 4;
             this.lbUser.Text = "Utilizator";
             // 
-            // contextMenuStrip1
+            // nightModeMenuStrip
             // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nightModeMenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.nightModeMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.modDeNoapteToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(209, 36);
+            this.nightModeMenuStrip.Name = "contextMenuStrip1";
+            this.nightModeMenuStrip.Size = new System.Drawing.Size(209, 36);
             // 
             // modDeNoapteToolStripMenuItem
             // 
@@ -138,7 +147,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1200, 692);
-            this.ContextMenuStrip = this.contextMenuStrip1;
+            this.ContextMenuStrip = this.nightModeMenuStrip;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lbUser);
             this.Controls.Add(this.lbPass);
@@ -146,10 +155,12 @@
             this.Controls.Add(this.tbUser);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.btnRegister);
+            this.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Login";
             this.Text = "Login";
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.nightModeMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -163,7 +174,7 @@
         private System.Windows.Forms.TextBox tbPass;
         private System.Windows.Forms.Label lbPass;
         private System.Windows.Forms.Label lbUser;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ContextMenuStrip nightModeMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem modDeNoapteToolStripMenuItem;
         private System.Windows.Forms.Label label1;
     }

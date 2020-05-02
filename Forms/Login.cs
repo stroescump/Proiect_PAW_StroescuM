@@ -11,18 +11,21 @@ using System.Data.OleDb;
 using Proiect_PAW_StroescuM.Singletons;
 using Proiect_PAW_StroescuM.Properties;
 using Proiect_PAW_StroescuM.Interfaces;
+using Proiect_PAW_StroescuM.Helpers;
 
 namespace Proiect_PAW_StroescuM
 {
-    public partial class Login : Form, INightMode
+    public partial class Login : Form
     {
-        private bool nightMode = Settings.Default.isNightMode;
+        private bool isNightMode = Settings.Default.isNightMode;
         string provider = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = banking.accdb";
         private Hash_SHA256 encryptionClassInstance = Hash_SHA256.getInstance();
+        private HelperNightMode helperNightMode = new HelperNightMode();
         public Login()
         {
             InitializeComponent();
-            setNightMode(nightMode, this);
+            tbUser.Focus();
+            helperNightMode.setColorTheme(isNightMode, this);
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -79,46 +82,17 @@ namespace Proiect_PAW_StroescuM
 
         private void modDeNoapteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            nightMode = !nightMode;
-            setNightMode(nightMode, this);
-        }
-
-        public void setNightMode(bool isNight, Form parent)
-        {
-            if (isNight)
+            isNightMode = !isNightMode;
+            if (isNightMode)
             {
-                parent.BackColor = Color.Black;
-                lbPass.ForeColor = Color.WhiteSmoke;
-                lbUser.ForeColor = Color.WhiteSmoke;
-
-                btnLogin.BackColor = Color.Black;
-                btnRegister.BackColor = Color.Black;
-
-                btnLogin.ForeColor = Color.WhiteSmoke;
-                btnRegister.ForeColor = Color.WhiteSmoke;
-
-                label1.ForeColor = Color.WhiteSmoke;
-                label1.Text = "**Pentru a reveni la modul de zi, apasa click dreapta pe formular";
-
-                contextMenuStrip1.Items[0].Text = "Mod de zi";
+                nightModeMenuStrip.Items[0].Text = "Mod de zi";
             }
             else
             {
-                parent.BackColor = Color.WhiteSmoke;
-                lbPass.ForeColor = Color.Black;
-                lbUser.ForeColor = Color.Black;
-
-                btnLogin.BackColor = Color.WhiteSmoke;
-                btnRegister.BackColor = Color.WhiteSmoke;
-
-                btnLogin.ForeColor = Color.Black;
-                btnRegister.ForeColor = Color.Black;
-
-                label1.ForeColor = Color.Black;
-                label1.Text = "**Pentru a activa modul de noapte, apasa click dreapta pe formular";
-
-                contextMenuStrip1.Items[0].Text = "Mod de noapte";
+                nightModeMenuStrip.Items[0].Text = "Mod de noapte";
             }
+            helperNightMode.setNightMode(isNightMode, this);
         }
+
     }
 }
